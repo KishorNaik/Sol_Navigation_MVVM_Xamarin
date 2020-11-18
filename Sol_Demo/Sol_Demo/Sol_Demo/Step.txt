@@ -1,0 +1,83 @@
+﻿Ref:
+Navigation Using MVVM
+https://stackoverflow.com/questions/43254396/xamarin-form-page-navigation-in-mvvm
+
+Error : PushAsync is not supported globally on Android, please use a NavigationPage
+https://stackoverflow.com/questions/24621814/pushasync-is-not-supported-globally-on-android-please-use-a-navigationpage-xa
+
+Disable the Nav Bar in Content Page using XAML
+https://stackoverflow.com/questions/24935929/xamarin-forms-getting-rid-of-back-button-in-nav-bar
+
+Step 1:
+Go to App.xaml.cs file. Go to constructor and you get following code.
+MainPage = new new MainPage();
+
+Now replace above code with this
+MainPage = new NavigationPage(new MainPage()); 
+
+Step 2:
+Create View Model Class inside the View Model folder. Check MainPageViewModel class.
+
+using Sol_Demo.Views;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
+
+namespace Sol_Demo.ViewModels
+{
+    public class MainPageViewModel
+    {
+        private INavigation navigation = null;
+
+        public MainPageViewModel()
+        {
+            NavigatePage2 = new Command(async () => await this.NavigatePage2Async());
+        }
+
+        public ICommand NavigatePage2 { get; set; }
+
+        private async Task NavigatePage2Async()
+        {
+            navigation = Application.Current.MainPage.Navigation;
+            await navigation.PushAsync(new Page2());
+        }
+    }
+}
+
+
+Step 3:
+Create View page inside the View folder. Check MainPage.
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Sol_Demo.ViewModels"
+             x:Class="Sol_Demo.Views.MainPage">
+
+    <ContentPage.BindingContext>
+        <vm:MainPageViewModel></vm:MainPageViewModel>
+    </ContentPage.BindingContext>
+
+    <StackLayout>
+        <Button
+            x:Name="btnGotoPage"
+            Text="Go to Page 2"
+            Command="{Binding NavigatePage2}"
+            ></Button>
+    </StackLayout>
+</ContentPage>
+
+
+Step 4:
+Disable the Nav bar from the Content Page
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Sol_Demo.ViewModels"
+             x:Class="Sol_Demo.Views.MainPage"
+             NavigationPage.HasNavigationBar="False"
+             >
+</ContentPage>
+

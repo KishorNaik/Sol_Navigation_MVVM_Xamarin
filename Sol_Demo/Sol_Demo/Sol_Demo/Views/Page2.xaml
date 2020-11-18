@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Sol_Demo.ViewModels"
+             x:Class="Sol_Demo.Views.Page2"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.BindingContext>
+        <vm:Page2ViewModel></vm:Page2ViewModel>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Page 2"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" />
+            <Button Text="Goto Page 3" Command="{Binding NavigatePage3}"></Button>
+            <Button Text="Go to Main Page" Command="{Binding NavigateMainPage}"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
